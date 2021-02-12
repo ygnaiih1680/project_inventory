@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 import json
 import requests as req
 
 
 def book(request):
-    return render(request, "book_info.html")
+    return render(request, "book.html")
 
 
 def search(request):
@@ -16,7 +16,7 @@ def search(request):
         "Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"
     }
     if search_text == "":
-        return render(request, 'index.html', {"error": "input text"})
+        return redirect(book)
     params = {
         "sort": "accuracy",
         "query": search_text,
@@ -26,4 +26,4 @@ def search(request):
     if criteria != "":
         params["target"] = criteria
     books = json.loads(req.get(url=url, params=params, headers=headers).text)["documents"]
-    return render(request, 'book_info.html', {"books": books})
+    return render(request, 'book_search.html', {"books": books})
