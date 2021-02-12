@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load filters %}
+{% load assignments %}
+{% load static %}
+
+{% block title %} 책 정보 {% endblock %}
+{% block css %}
+    <link href="{% static 'book_info/css/book_info.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+    <div class="d-flex flex-column align-items-start justify-content-center p-5 overflow-auto">
+        <form class="input-group px-5" action="{% url "search" %}" style="min-width: calc(450px + 6rem)">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false" id="criteria-display">검색 기준
+            </button>
+            <ul class="dropdown-menu" id="search-criteria-list">
+                <li><a class="dropdown-item" data-search-criteria="title">제목</a></li>
+                <li><a class="dropdown-item" data-search-criteria="publisher">출판사</a></li>
+                <li><a class="dropdown-item" data-search-criteria="isbn">ISBN</a></li>
+            </ul>
+            <input class="form-control bg-light" type="search" placeholder="책 검색..." aria-label="Search"
+                   id="criteria-input" name="book-search">
+            <input type="hidden" name="search-criteria" value=""/>
+            <button class="btn btn-outline-success" type="submit">검색</button>
+        </form>
+        {% ifequal books None %}
+            <div class="d-flex w-100 justify-content-center align-items-center" style="height: calc(100vh - 12rem);">
+                <small class="text-secondary mx-auto">책 정보를 검색해보세요</small>
+            </div>
+        {% else %}
+            <div class="container-fluid book-container g-5 py-5">
+                {% for book in books %}
+                    {% define book|key:"isbn"|str_split|key:0 as isbn %}
+                    {% define book|key:"title" as title %}
+                    {% define book|key:"contents" as contents %}
+                    {% define book|key:"authors"|arr_str as authors %}
+                    {% define book|key:"thumbnail" as thumbnail %}
+                    {% define book|key:"url" as url %}
+
+                    <form class="card book" action="{% url "library_add" isbn %}" onsubmit="return fillData()" method="post">
+                    {% csrf_token %}
+                        <div class="d-none" id="book-info-container">
+                            <input type="hidden" name="title"/>
+                            <input type="hidden" name="contents"/>
+                            <input type="hidden" name="authors"/>
+                            <input type="hidden" name="thumbnail"/>
+                            <input type="hidden" name="url"/>
+                        </div>
+
+                        <div class="book-title" id="title">{{ title }}</div>
+                        <div class="book-thumbnail">
+                            <img id="thumbnail" src="{{ thumbnail }}" alt="{{ title }}">
+                        </div>
+                        <div class="book-detail overflow-auto">
+                            <div class="card-body p-0">
+                                <p class="card-text p-2" id="contents">{{ contents }}</p>
+                                <p class="card-text">
+                                    <small class="text-muted ps-2" id="authors">
+                                        저자 : {{ authors }}
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="book-control">
+                            <a class="btn-sm btn-secondary" href="{{ url }}" target="_blank" id="url">자세히 보기</a>
+                            <input type="submit" value="독서 기록 하기" class="btn-sm btn-primary"/>
+                        </div>
+                    </form>
+                {% endfor %}
+            </div>
+        {% endifequal %}
+    </div>
+{% endblock %}
+
+{% block js_script %}
+    <script src="{% static "book_info/js/book_info.js" %}"></script>
+{% endblock %}

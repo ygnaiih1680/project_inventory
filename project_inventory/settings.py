@@ -18,7 +18,7 @@ from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-secret_file = os.path.join(BASE_DIR, 'secrets.json')
+secret_file = Path.joinpath(BASE_DIR, 'secrets.json')
 
 with open(secret_file) as f:
     secrets = json.loads(f.read())
@@ -28,7 +28,7 @@ def get_secret(setting):
     try:
         return secrets[setting]
     except KeyError:
-        error_msg = "Set the {} environment variable".format(setting)
+        error_msg = f"Set the {setting} environment variable"
         raise ImproperlyConfigured(error_msg)
 
 
@@ -66,7 +66,7 @@ INSTALLED_APPS = [
 
     #  custom apps
     "main",
-    "search_book",
+    "book",
     "library",
 ]
 
@@ -125,10 +125,10 @@ WSGI_APPLICATION = 'project_inventory.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'book_management',
-        'USER': 'book_management',
-        'PASSWORD': 'BookAdmin!99',
-        'HOST': 'ygnaiih1680.synology.me',
+        'NAME': 'project_inventory',
+        'USER': get_secret("DB_USER"),
+        'PASSWORD': get_secret("DB_PASSWORD"),
+        'HOST': get_secret("DB_HOST"),
         'PORT': '23307'
     }
 }
@@ -154,9 +154,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -168,3 +168,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'main/static',
+    BASE_DIR / 'library/static',
+    BASE_DIR / 'book/static',
+]
+
+STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
