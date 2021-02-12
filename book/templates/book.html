@@ -5,7 +5,6 @@
 
 {% block title %} 책 정보 {% endblock %}
 
-
 {% block main %}
     <div class="d-flex flex-column align-items-start justify-content-center p-5 overflow-auto">
         <form class="input-group px-5" action="{% url "search" %}" style="min-width: calc(450px + 6rem)">
@@ -19,7 +18,7 @@
             </ul>
             <input class="form-control bg-light" type="search" placeholder="책 검색..." aria-label="Search"
                    id="criteria-input" name="book-search">
-            <input type="hidden" name="search-criteria" value=""/>
+            <input type="hidden" name="criteria" value=""/>
             <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
         {% block search_result %}

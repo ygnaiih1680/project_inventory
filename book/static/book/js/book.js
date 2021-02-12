@@ -8,7 +8,7 @@ function changeSearchCriteria(evt) {
         const {textContent} = target
         display.textContent = textContent
         input.placeholder = textContent + "(으)로 검색하기..."
-        document.querySelector("input[name='search-criteria']").value = target.dataset.searchCriteria
+        document.querySelector("input[name='criteria']").value = target.dataset.searchCriteria
     }
 }
 

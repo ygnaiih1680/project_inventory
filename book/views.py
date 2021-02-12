@@ -10,7 +10,7 @@ def book(request):
 
 def search(request):
     search_text = request.GET["book-search"]
-    criteria = request.GET["search-criteria"]
+    criteria = request.GET["criteria"]
     url = "https://dapi.kakao.com/v3/search/book"
     headers = {
         "Authorization": f"KakaoAK {settings.KAKAO_REST_API_KEY}"
