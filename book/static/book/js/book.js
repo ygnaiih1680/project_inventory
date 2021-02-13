@@ -12,19 +12,19 @@ function changeSearchCriteria(evt) {
     }
 }
 
-function fillData() {
+function fillData(isbn) {
     const bookInfo = {
-        title: document.querySelector("#title").textContent,
-        contents: document.querySelector("#contents").textContent,
-        thumbnail: document.querySelector("#thumbnail").getAttribute("src"),
-        url: document.querySelector("#url").getAttribute("href"),
-        authors: document.querySelector("#authors").textContent.trim().substring(5)
+        title: document.getElementById(`${isbn}-title`).textContent,
+        contents: document.getElementById(`${isbn}-contents`).textContent,
+        thumbnail: document.getElementById(`${isbn}-thumbnail`).getAttribute("src"),
+        url: document.getElementById(`${isbn}-url`).getAttribute("href"),
+        authors: document.getElementById(`${isbn}-authors`).textContent.trim().substring(5)
     }
-    const container = document.querySelector("#book-info-container")
+    const container = document.getElementById(`${isbn}`)
     for (const data of container.children) {
         const key = data.getAttribute("name")
         if (key !== "isbn") data.value = bookInfo[key]
     }
-
+    
     return true
 }

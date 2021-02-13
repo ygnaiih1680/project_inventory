@@ -8,44 +8,51 @@
 {% endblock %}
 
 {% block search_result %}
-    <div class="container-fluid book-container g-5 py-5">
-        {% for book in books %}
-            {% define book|key:"isbn"|str_split|key:0 as isbn %}
-            {% define book|key:"title" as title %}
-            {% define book|key:"contents" as contents %}
-            {% define book|key:"authors"|arr_str as authors %}
-            {% define book|key:"thumbnail" as thumbnail %}
-            {% define book|key:"url" as url %}
+    {% if books|length_is:0 %}
+        <div class="d-flex w-100 justify-content-center align-items-center" style="height: calc(100vh - 11.375rem);">
+            <small class="text-secondary mx-auto">검색 결과가 없습니다!</small>
+        </div>
+    {% else %}
+        <div class="container-fluid book-container g-5 py-5">
+            {% for book in books %}
+                {% define book|key:"isbn"|str_split|key:0 as isbn %}
+                {% define book|key:"title" as title %}
+                {% define book|key:"contents" as contents %}
+                {% define book|key:"authors"|arr_str as authors %}
+                {% define book|key:"thumbnail" as thumbnail %}
+                {% define book|key:"url" as url %}
 
-            <form class="card book" action="{% url "library_add" isbn %}" onsubmit="return fillData()" method="post">
-                {% csrf_token %}
-                <div class="d-none" id="book-info-container">
-                    <input type="hidden" name="title"/>
-                    <input type="hidden" name="contents"/>
-                    <input type="hidden" name="authors"/>
-                    <input type="hidden" name="thumbnail"/>
-                    <input type="hidden" name="url"/>
-                </div>
-
-                <div class="book-title" id="title">{{ title }}</div>
-                <div class="book-thumbnail">
-                    <img id="thumbnail" src="{{ thumbnail }}" alt="{{ title }}">
-                </div>
-                <div class="book-detail overflow-auto">
-                    <div class="card-body p-0">
-                        <p class="card-text p-2" id="contents">{{ contents }}</p>
-                        <p class="card-text">
-                            <small class="text-muted ps-2" id="authors">
-                                저자 : {{ authors }}
-                            </small>
-                        </p>
+                <form class="card book" action="{% url "library_add" isbn %}" onsubmit="return fillData('{{ isbn }}')"
+                      method="post">
+                    {% csrf_token %}
+                    <div class="d-none" id="{{ isbn }}">
+                        <input type="hidden" name="title"/>
+                        <input type="hidden" name="contents"/>
+                        <input type="hidden" name="authors"/>
+                        <input type="hidden" name="thumbnail"/>
+                        <input type="hidden" name="url"/>
                     </div>
-                </div>
-                <div class="book-control">
-                    <a class="btn-sm btn-secondary" href="{{ url }}" target="_blank" id="url">자세히 보기</a>
-                    <input type="submit" value="독서 기록 하기" class="btn-sm btn-primary"/>
-                </div>
-            </form>
-        {% endfor %}
-    </div>
+
+                    <div class="book-title" id="{{ isbn }}-title">{{ title }}</div>
+                    <div class="book-thumbnail">
+                        <img id="{{ isbn }}-thumbnail" src="{{ thumbnail }}" alt="{{ title }}">
+                    </div>
+                    <div class="book-detail overflow-auto">
+                        <div class="card-body p-0">
+                            <p class="card-text p-2" id="{{ isbn }}-contents">{{ contents }}</p>
+                            <p class="card-text">
+                                <small class="text-muted ps-2" id="{{ isbn }}-authors">
+                                    저자 : {{ authors }}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="book-control">
+                        <a class="btn-sm btn-secondary" href="{{ url }}" target="_blank" id="{{ isbn }}-url">자세히 보기</a>
+                        <input type="submit" value="독서 기록 하기" class="btn-sm btn-primary"/>
+                    </div>
+                </form>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

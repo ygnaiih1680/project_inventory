@@ -47,7 +47,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'pi.airini.synology.me'
+    'localhost',
+    'pi.airini.synology.me',
 ]
 
 # Application definition

@@ -142,3 +142,4 @@ cython_debug/
 .idea
 secrets.json
 project_inventory.iml
+static

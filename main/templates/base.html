@@ -15,18 +15,15 @@
 </head>
 <body>
 {% block navbar %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url "index" %}">독서 기록</a>
+            <a class="navbar-brand" href="{% url "index" %}">Project Inventory</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                {% ifnotequal login None %}
-                    <span class="navbar-text">{{ name }}님, 환영합니다!</span>
-                {% endifnotequal %}
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url "book" %}">책 정보</a>
@@ -35,11 +32,7 @@
                         <a class="nav-link" href="#">내 서재</a>
                     </li>
                     <li class="nav-item">
-                        {% ifequal login None %}
-                            <a class="nav-link" href="{% provider_login_url "kakao" %}">로그인</a>
-                        {% else %}
-                            <a class="nav-link" href="#">로그아웃</a>
-                        {% endifequal %}
+                        <a class="nav-link" href="{% provider_login_url "kakao" %}">로그인</a>
                     </li>
                 </ul>
             </div>
