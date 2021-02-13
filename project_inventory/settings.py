@@ -43,11 +43,11 @@ SECRET_KEY = get_secret("SECRET_KEY")
 KAKAO_REST_API_KEY = get_secret("KAKAO_REST_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'airini.synology.me'
+    'pi.airini.synology.me'
 ]
 
 # Application definition
@@ -79,7 +79,7 @@ SOCIALACCOUNT_PROVIDERS = {
     'kakao': {
         'APP': {
             'client_id': KAKAO_REST_API_KEY,
-            'secret': 540475,
+            'secret': get_secret("KAKAO_SECRET_KEY"),
             'key': ''
         }
     }
