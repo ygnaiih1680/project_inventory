@@ -47,7 +47,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'ygnaiih1680.synology.me'
+    'airini.synology.me'
 ]
 
 # Application definition
@@ -174,7 +174,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'main/static',
-    BASE_DIR / 'library/static',
+    # BASE_DIR / 'library/static',
     BASE_DIR / 'book/static',
 ]
 
