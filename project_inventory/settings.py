@@ -43,7 +43,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 KAKAO_REST_API_KEY = get_secret("KAKAO_REST_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
