@@ -1,13 +1,13 @@
 .book-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    grid-template-rows: repeat(auto-fill, 1fr);
     column-gap: var(--bs-gutter-x);
     row-gap: var(--bs-gutter-y);
 }
 
 .book {
     display: grid;
-    grid-template: 3rem 1fr 3rem / 1fr 2fr;
+    grid-template: 3rem 1fr 3rem / 1fr 5fr;
     gap: 0;
 }
 
@@ -26,7 +26,7 @@
 .book-detail {
     display: flex;
     height: 0;
-    padding-bottom: 72.5%;
+    padding-bottom: 29%;
     grid-row-start: 2;
 }
 
@@ -34,7 +34,7 @@
     /*position: sticky;*/
     /*top: 0;*/
     grid-column: 1 / 3;
-    font-size: 1.25rem;
+    font-size: 1rem;
     white-space: nowrap;
     overflow-x: hidden;
     padding: .5rem;

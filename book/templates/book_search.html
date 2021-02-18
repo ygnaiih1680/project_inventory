@@ -4,16 +4,27 @@
 {% load assignments %}
 
 {% block css %}
+    <link rel="stylesheet" href="{% static "book/css/book.css" %}">
     <link href="{% static 'book/css/book_search.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block search_result %}
     {% if books|length_is:0 %}
-        <div class="d-flex w-100 justify-content-center align-items-center" style="height: calc(100vh - 11.375rem);">
-            <small class="text-secondary mx-auto">검색 결과가 없습니다!</small>
+        <div class="d-flex w-100 justify-content-center align-items-center">
+            <small class="text-secondary">검색 결과가 없습니다!</small>
         </div>
     {% else %}
-        <div class="container-fluid book-container g-5 py-5">
+        <form class="container-fluid book-container g-4 p-3" action="{% url "library_add" %}" method="post"
+              id="search-result" onsubmit="return fillData(event)">
+            {% csrf_token %}
+            <div class="d-none" id="book-info-container">
+                <input type="hidden" name="isbn"/>
+                <input type="hidden" name="title"/>
+                <input type="hidden" name="contents"/>
+                <input type="hidden" name="authors"/>
+                <input type="hidden" name="thumbnail"/>
+                <!--<input type="hidden" name="url"/>-->
+            </div>
             {% for book in books %}
                 {% define book|key:"isbn"|str_split|key:0 as isbn %}
                 {% define book|key:"title" as title %}
@@ -22,17 +33,7 @@
                 {% define book|key:"thumbnail" as thumbnail %}
                 {% define book|key:"url" as url %}
 
-                <form class="card book" action="{% url "library_add" isbn %}" onsubmit="return fillData('{{ isbn }}')"
-                      method="post">
-                    {% csrf_token %}
-                    <div class="d-none" id="{{ isbn }}">
-                        <input type="hidden" name="title"/>
-                        <input type="hidden" name="contents"/>
-                        <input type="hidden" name="authors"/>
-                        <input type="hidden" name="thumbnail"/>
-                        <input type="hidden" name="url"/>
-                    </div>
-
+                <div class="card book">
                     <div class="book-title" id="{{ isbn }}-title">{{ title }}</div>
                     <div class="book-thumbnail">
                         <img id="{{ isbn }}-thumbnail" src="{{ thumbnail }}" alt="{{ title }}">
@@ -48,11 +49,25 @@
                         </div>
                     </div>
                     <div class="book-control">
-                        <a class="btn-sm btn-secondary" href="{{ url }}" target="_blank" id="{{ isbn }}-url">자세히 보기</a>
-                        <input type="submit" value="독서 기록 하기" class="btn-sm btn-primary"/>
+                        <button class="btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#detail-{{ isbn }}">자세히 보기</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="detail-{{ isbn }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{ title }}</h5>
+                                    </div>
+                                    <div class="modal-body">{{ contents }}</div>
+                                    <div class="modal-footer">
+                                        <div class="btn btn-secondary" data-bs-dismiss="modal">닫기</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input data-isbn="{{ isbn }}" type="submit" value="독서 기록 하기" class="btn-sm btn-primary"/>
                     </div>
-                </form>
+                </div>
             {% endfor %}
-        </div>
+        </form>
     {% endif %}
 {% endblock %}

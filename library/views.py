@@ -5,18 +5,19 @@ def library(request):
     return render(request, "library.html")
 
 
-def library_add(request, isbn):
+def library_add(request):
+    isbn = request.POST["isbn"]
     title = request.POST["title"]
     contents = request.POST["contents"]
     authors = request.POST["authors"]
-    url = request.POST["url"]
+    # url = request.POST["url"]
 
-    param = {
+    params = {
         "isbn": isbn,
         "title": title,
         "contents": contents,
         "authors": authors,
-        "url": url,
+        # "url": url,
     }
 
-    return render(request, "library_add.html", param)
+    return render(request, "library_add.html", params)

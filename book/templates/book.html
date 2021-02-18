@@ -5,9 +5,13 @@
 
 {% block title %} 책 정보 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static "book/css/book.css" %}">
+{% endblock %}
+
 {% block main %}
-    <div class="d-flex flex-column align-items-start justify-content-center p-5 overflow-auto">
-        <form class="input-group px-5" action="{% url "search" %}" style="min-width: calc(450px + 6rem)">
+    <main id="book-main">
+        <form class="input-group p-3" action="{% url "search" %}">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false" id="criteria-display">검색 기준
             </button>
@@ -17,16 +21,16 @@
                 <li><a class="dropdown-item" data-search-criteria="isbn">ISBN</a></li>
             </ul>
             <input class="form-control bg-light" type="search" placeholder="책 검색..." aria-label="Search"
-                   id="criteria-input" name="book-search">
+                   id="criteria-input" name="book-search" required>
             <input type="hidden" name="criteria" value=""/>
             <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
         {% block search_result %}
-            <div class="d-flex w-100 justify-content-center align-items-center" style="height: calc(100vh - 11.375rem);">
-                <small class="text-secondary mx-auto">책 정보를 검색해보세요</small>
+            <div class="d-flex w-100 justify-content-center align-items-center flex-column">
+                <small class="text-secondary">책 정보를 검색해보세요</small>
             </div>
         {% endblock %}
-    </div>
+    </main>
 {% endblock %}
 
 {% block js_script %}

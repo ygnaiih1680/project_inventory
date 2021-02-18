@@ -1,4 +1,5 @@
 document.querySelector("#search-criteria-list").addEventListener("click", changeSearchCriteria)
+document.querySelector("#search-result").addEventListener("submit", (evt) => fillData(evt))
 
 function changeSearchCriteria(evt) {
     const display = document.querySelector("#criteria-display")
@@ -12,19 +13,23 @@ function changeSearchCriteria(evt) {
     }
 }
 
-function fillData(isbn) {
-    const bookInfo = {
-        title: document.getElementById(`${isbn}-title`).textContent,
-        contents: document.getElementById(`${isbn}-contents`).textContent,
-        thumbnail: document.getElementById(`${isbn}-thumbnail`).getAttribute("src"),
-        url: document.getElementById(`${isbn}-url`).getAttribute("href"),
-        authors: document.getElementById(`${isbn}-authors`).textContent.trim().substring(5)
+function fillData(evt) {
+    evt.preventDefault()
+    if ("submitter" in evt) {
+        const {isbn} = evt.submitter.dataset
+        if (isbn === undefined) return
+        const bookInfo = {
+            isbn,
+            title: document.getElementById(`${isbn}-title`).textContent,
+            contents: document.getElementById(`${isbn}-contents`).textContent,
+            thumbnail: document.getElementById(`${isbn}-thumbnail`).getAttribute("src"),
+            // url: document.getElementById(`${isbn}-url`).getAttribute("href"),
+            authors: document.getElementById(`${isbn}-authors`).textContent.trim().substring(5)
+        }
+        const container = document.getElementById("book-info-container")
+        for (const data of container.children)
+            data.value = bookInfo[data.getAttribute("name")]
+
+        evt.target.submit()
     }
-    const container = document.getElementById(`${isbn}`)
-    for (const data of container.children) {
-        const key = data.getAttribute("name")
-        if (key !== "isbn") data.value = bookInfo[key]
-    }
-    
-    return true
 }

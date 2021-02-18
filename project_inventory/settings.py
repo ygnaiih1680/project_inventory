@@ -43,7 +43,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 KAKAO_REST_API_KEY = get_secret("KAKAO_REST_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(get_secret("DEBUG"))
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -91,7 +91,10 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
-LOGIN_REDIRECT_URL = "/profile/"
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_ON_GET = True
+SOCIALACCOUNT_ADAPTER = "main.adapter.KakaoAccountAdapter"
+AUTH_USER_MODEL = "main.KakaoUser"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

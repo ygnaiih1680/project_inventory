@@ -23,7 +23,7 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url "book" %}">책 정보</a>
@@ -31,24 +31,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">내 서재</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% provider_login_url "kakao" %}">로그인</a>
+                    <li class="nav-item d-flex justify-content-center align-items-center">
+                        {% if not user.is_authenticated %}
+                            <a class="nav-link" href="{% provider_login_url "kakao" %}">로그인</a>
+                        {% else %}
+                            <img src="{{ user.thumbnail_img }}" alt="{{ user.nickname }}" style="width: 1.75rem; height: 1.75rem; border-radius: 50%"/>
+                            <a class="nav-link" href="{% url "account_logout" %}">{{ user.nickname }}</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 {% endblock %}
-<main class="bg-light">
-    {% block main %}
-
-    {% endblock %}
-</main>
+{% block main %} {% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
-{% block js_script %}
-
-{% endblock %}
+{% block js_script %} {% endblock %}
 </body>
 </html>
